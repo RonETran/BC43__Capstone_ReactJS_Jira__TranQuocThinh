@@ -106,7 +106,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #74e5ff74, #53d1fb74);
+  background: linear-gradient(to right, #9ceafc74, #72dcff74);
 }
 
 .login-box .form-antd h2 {
