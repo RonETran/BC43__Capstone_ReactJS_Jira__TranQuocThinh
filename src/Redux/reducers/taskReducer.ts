@@ -177,24 +177,6 @@ export const createTaskApi = (values:TaskFrm) => {
             dispatch(action1)
             const action2 = resetFormCreateTask(1);
             dispatch(action2)
-            // const action2 = changeInputAction('');
-            // dispatch(action2)
-            // const action3 = changePriorityAction(1);
-            // dispatch(action3)
-            // const action4 = changeTaskTypeAction(1);
-            // dispatch(action4)
-            // const action5 = changeEditorAction('');
-            // dispatch(action5)
-            // const action6 = changeEstimateAction(0);
-            // dispatch(action6)
-            // const action7 = changeAssignAction([]);
-            // dispatch(action7)
-            // const action8 = changeTimeTrackingSpentAction(0);
-            // dispatch(action8)
-            // const action9 = changeTimeTrackingRemainingAction(0);
-            // dispatch(action9)
-            // const action10 = changeStatusAction('1');
-            // dispatch(action10)
             Swal.fire({
                 icon:'success',
                 title:'Success',

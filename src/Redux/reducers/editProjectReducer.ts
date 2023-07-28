@@ -96,6 +96,7 @@ const editProjectReducer = createSlice({
     },
     closeEditProjectAction: (state,action) =>{
       state.visibleDrawer = false;
+      state.projectUpdate = initialState.projectUpdate
     },
     getProjectDetailAction: (state,action) => {
       state.projectDetail = action.payload;
