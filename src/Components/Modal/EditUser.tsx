@@ -1,10 +1,9 @@
 import { Button, Form, Input, Modal } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DispatchType, RootState } from "../../Redux/configStore";
 import { useDispatch } from "react-redux";
-import { closeModalEditUser, editUserApi, getUserEditAction } from "../../Redux/reducers/userReducer";
-import { Store } from "antd/es/form/interface";
+import { closeModalEditUser, editUserApi } from "../../Redux/reducers/userReducer";
 
 type Props = {};
 

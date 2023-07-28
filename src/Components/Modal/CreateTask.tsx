@@ -144,6 +144,7 @@ export default function CreateTask({}: Props) {
                 title="Create Task"
                 centered
                 open={visible}
+                bodyStyle={{ maxHeight: '80vh', overflowY: 'auto' }}
                 onCancel={()=>{
                     const actionClose = closeModalAction(false);
                     dispatch(actionClose)
@@ -154,7 +155,7 @@ export default function CreateTask({}: Props) {
                 <form className="container create-modal" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <p className='mb-1 mt-3'>Task Name</p>
-                        <input className="form-control" type="text" name="taskName"  onChange={handleChange} />
+                        <input className="form-control" type="text" name="taskName" value={taskFrm.taskName}  onChange={handleChange} />
                     </div>
                     <div className="form-group position-relative">
                         <p className='mb-1 mt-3'>Project</p>
@@ -165,23 +166,23 @@ export default function CreateTask({}: Props) {
                     </div>
                     <div className="form-group position-relative">
                         <p className='mb-1 mt-3'>Status</p>
-                        <select name="statusId" className="form-control" onChange={handleStatusChange}>
+                        <select name="statusId" value={taskFrm.statusId} className="form-control" onChange={handleStatusChange}>
                             {renderStatus()}
                         </select>
                         <i className="fa fa-angle-down icon-1"></i>
                     </div>
                     <div className="form-group">
                         <div className="row">
-                            <div className="col-6 position-relative">
+                            <div className="col-lg-6 position-relative">
                                 <p className='mb-1 mt-3'>Priority</p>
-                                <select name="priorityId" className="form-control" onChange={handlePriorityChange}>
+                                <select name="priorityId" className="form-control" value={taskFrm.priorityId} onChange={handlePriorityChange}>
                                     {renderPriority()}
                                 </select>
                                 <i className="fa fa-angle-down icon-2"></i>
                             </div>
-                            <div className="col-6 position-relative">
+                            <div className="col-lg-6 position-relative">
                                 <p className='mb-1 mt-3'>Task type</p>
-                                <select className="form-control" name="typeId" onChange={handleTaskTypeChange}>
+                                <select className="form-control" name="typeId" value={taskFrm.typeId} onChange={handleTaskTypeChange}>
                                     {renderTaskType()}
                                 </select>
                                 <i className="fa fa-angle-down icon-2"></i>
@@ -190,12 +191,13 @@ export default function CreateTask({}: Props) {
                     </div>
                     <div className="form-group">
                         <div className="row">
-                            <div className="col-6">
+                            <div className="col-lg-6">
                                 <p className='mb-1 mt-3'>Assignees</p>
                                 <Select
                                     mode="multiple"
                                     size={size}
                                     options={userOptions}
+                                    value={taskFrm.listUserAsign}
                                     placeholder="Please select"
                                     optionFilterProp="label"
                                     onChange={handleAssignChange}
@@ -203,7 +205,7 @@ export default function CreateTask({}: Props) {
                                 >
                                 </Select>
                             </div>
-                            <div className="col-6">
+                            <div className="col-lg-6">
                                 <p className='mb-1 mt-3'>Time tracking</p>
                                 <Slider defaultValue={30} max={Number(timeTracking.timeTrackingSpent) + Number(timeTracking.timeTrackingRemaining)} value={timeTracking.timeTrackingSpent} />
                                 <div className="row">
@@ -217,23 +219,23 @@ export default function CreateTask({}: Props) {
                             </div>
                         </div>
                         <div className="row mt-2">
-                            <div className="col-6">
+                            <div className="col-lg-6">
                                 <div className="row">
                                     <div className="col-12">
                                         <p className='mb-1 mt-3'>Original Estimate</p>
-                                        <input className="form-control" type="number" name="originalEstimate" defaultValue={0} min={0} onChange={handleEstimateChange} />
+                                        <input className="form-control" type="number" name="originalEstimate" value={taskFrm.originalEstimate} min={0} onChange={handleEstimateChange} />
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-6">
+                            <div className="col-lg-6">
                                 <div className='row'>
                                     <div className="col-6">
                                         <p className='mb-1 mt-3'>Time spent (hours)</p>
-                                        <input className="form-control" type="number" name="timeTrackingSpent" defaultValue={0} min={0} onChange={handleTimeTrackingSpentChange} />
+                                        <input className="form-control" type="number" name="timeTrackingSpent" value={taskFrm.timeTrackingSpent} min={0} onChange={handleTimeTrackingSpentChange} />
                                     </div>
                                     <div className="col-6">
                                         <p className='mb-1 mt-3'>Time remaining (hours)</p>
-                                        <input className="form-control" type="number" name="timeTrackingRemaining" defaultValue={0} min={0} onChange={handleTimeTrackingRemainingChange} />
+                                        <input className="form-control" type="number" name="timeTrackingRemaining" value={taskFrm.timeTrackingRemaining} min={0} onChange={handleTimeTrackingRemainingChange} />
                                     </div>
                                 </div>
                             </div>
@@ -242,6 +244,7 @@ export default function CreateTask({}: Props) {
                     <div className="form-group">
                         <p className='mb-1 mt-3'>Description</p>
                         <Editor
+                            value={taskFrm.description}
                             init={{
                                 height: 250,
                                 menubar: false,

@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { loginAsyncAction } from "../../Redux/reducers/userLoginReducer";
 import * as yup from 'yup';
+import { Button, Form, Input } from "antd";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 
 type Props = {};
 
@@ -16,57 +18,54 @@ export interface UserLoginFrm {
 export default function Login({}: Props) {
   const dispatch:DispatchType = useDispatch();
 
-  const loginFrm = useFormik<UserLoginFrm>({
-    initialValues:{
-      email:'',
-      passWord:''
-    },
-
-    validationSchema:yup.object().shape({
-      email:yup.string().required("Email cannot be blank!").email("Email is invalid!"),
-      passWord:yup.string().required("Password cannot be blank!").min(8,"Password must be at least 8 characters")
-    }),
-
-    onSubmit:(values:UserLoginFrm) => {
-      const actionApi = loginAsyncAction(values);
-      dispatch(actionApi);
-    }
-  })
+  const onFinish = (values:UserLoginFrm) => {
+    const action = loginAsyncAction(values);
+    dispatch(action)
+  };
 
   return (
     <div className="login">
       <div className="login-box">
-        <form onSubmit={loginFrm.handleSubmit}>
+         <Form labelAlign="left" layout="vertical" onFinish={onFinish} className="form-antd">
           <h2>Login</h2>
-          <div className="input-box">
-            <span className="icon">
-              <i className="fa fa-envelope"></i>
-            </span>
-            <input type="email" name="email" id="email" onInput={loginFrm.handleChange} />
-            <label>Email</label>
-            {loginFrm.errors.email && loginFrm.touched.email && <p className='err text-danger ms-1'>{loginFrm.errors.email}</p>}
-          </div>
-          <div className="input-box">
-            <span className="icon">
-              <i className="fa fa-lock"></i>
-            </span>
-            <input type="password" name="passWord" id="passWord" onInput={loginFrm.handleChange}/>
-            <label>Password</label>
-            {loginFrm.errors.passWord && loginFrm.touched.passWord && <p className='err text-danger ms-1'>{loginFrm.errors.passWord}</p>}
-          </div>
-          <div className="remember-forgot">
-            <label>
-              <input type="checkbox" /> Remember me
-            </label>
-            <NavLink to="/">Forgot Password</NavLink>
-          </div>
-          <button type="submit">Sign In</button>
+
+          <Form.Item
+          className="form-item"
+            name="email"
+            label="Email"
+            rules={[
+              { required: true, message: "Please input your email!" },
+              { type: "email", message: "Please enter a valid email address!" },
+            ]}
+          >
+            <Input prefix={<MailOutlined className="site-form-item-icon" />}/>
+          </Form.Item>
+
+          <Form.Item
+            name="passWord"
+            label="Password"
+            rules={[
+              { required: true, message: "Please input your password!" },
+              { min: 8, message: "Password must be at least 8 characters!" },
+            ]}
+          >
+            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />}/>
+          </Form.Item>
+
+          <Form.Item  className="mt-5">
+            <Button type="primary" htmlType="submit">
+              Sign In
+            </Button>
+          </Form.Item>
+
+          <Form.Item>
           <div className="register-link">
             <p>
               Don't have an account? <NavLink to="/register">Register</NavLink>
             </p>
           </div>
-        </form>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

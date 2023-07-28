@@ -23,6 +23,7 @@ import {
 import { updateTaskApi } from "../../Redux/reducers/taskDetailReducer";
 import { changeAssignAction } from "../../Redux/reducers/taskReducer";
 import { Member } from "../../Redux/reducers/editProjectReducer";
+import { UserLoginApi } from "../../Redux/reducers/userLoginReducer";
 
 type Props = {};
 const { Option } = Select;
@@ -41,19 +42,7 @@ export default function TaskDetail({}: Props) {
   const comments = useSelector(
     (state: RootState) => state.taskDetailReducer.comments
   );
-
-  let userLogin = {
-    accessToken: "",
-    avatar: "",
-    email: "",
-    id: 0,
-    name: "",
-    phoneNumber: "",
-  };
-  if (localStorage.getItem(USER_LOGIN)) {
-    const strRes: string | null | any = localStorage.getItem(USER_LOGIN);
-    userLogin = { ...JSON.parse(strRes) };
-  }
+  const userLogin:UserLoginApi | undefined = useSelector((state:RootState)=>state.userLoginReducer.userLogin)
 
   const dispatch: DispatchType = useDispatch();
 
@@ -287,7 +276,7 @@ export default function TaskDetail({}: Props) {
           </div>
           <div className="container-fluid mt-3">
             <div className="row">
-              <div className="col-8">
+              <div className="col-lg-7">
                 <div>
                   {visibleEditTaskName === true ? (
                     <form
@@ -396,14 +385,10 @@ export default function TaskDetail({}: Props) {
                     style={{ display: "flex" }}
                   >
                     <div className="avatar">
-                      {userLogin.avatar === "" || userLogin.avatar === null ? (
-                        <Avatar icon={<i className="fa fa-user-alt"></i>} />
-                      ) : (
                         <Avatar
-                          src={userLogin.avatar}
+                          src={userLogin?.avatar}
                           style={{ width: 40, height: 40 }}
                         />
-                      )}
                     </div>
                     <div className="input-comment">
                       <Input
@@ -445,7 +430,7 @@ export default function TaskDetail({}: Props) {
                   <div className="lastest-comment mt-4">{renderComments()}</div>
                 </div>
               </div>
-              <div className="col-4">
+              <div className="col-lg-5 bd-task-detail">
                 <div className="status">
                   <h6>STATUS</h6>
                   <Select

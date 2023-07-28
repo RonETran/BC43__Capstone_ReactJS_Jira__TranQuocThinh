@@ -73,6 +73,7 @@ const taskReducer = createSlice({
     },
     closeModalAction: (state,action) => {
         state.visibleModal = false;
+        state.taskFrm = initialState.taskFrm
     },
     getStatusAction: (state,action) => {
         state.statusList = action.payload
@@ -115,11 +116,14 @@ const taskReducer = createSlice({
     },
     createTaskAction:(state,action) => {
         state.taskFrm = action.payload
+    },
+    resetFormCreateTask:(state,action) => {
+        state.taskFrm = initialState.taskFrm
     }
   }
 });
 
-export const {openModalAction,closeModalAction,getStatusAction,getPriorityAction,getTaskTypeAction,changeInputAction,changeProjectIdAction,changeEditorAction,changePriorityAction,changeStatusAction,changeTaskTypeAction,changeEstimateAction,changeAssignAction,changeTimeTrackingRemainingAction,changeTimeTrackingSpentAction,createTaskAction} = taskReducer.actions
+export const {openModalAction,closeModalAction,getStatusAction,getPriorityAction,getTaskTypeAction,changeInputAction,changeProjectIdAction,changeEditorAction,changePriorityAction,changeStatusAction,changeTaskTypeAction,changeEstimateAction,changeAssignAction,changeTimeTrackingRemainingAction,changeTimeTrackingSpentAction,createTaskAction,resetFormCreateTask} = taskReducer.actions
 
 export default taskReducer.reducer
 
@@ -171,24 +175,26 @@ export const createTaskApi = (values:TaskFrm) => {
             dispatch(action)
             const action1 = getProjectDetailApi(values.projectId);
             dispatch(action1)
-            const action2 = changeInputAction('');
+            const action2 = resetFormCreateTask(1);
             dispatch(action2)
-            const action3 = changePriorityAction(1);
-            dispatch(action3)
-            const action4 = changeTaskTypeAction(1);
-            dispatch(action4)
-            const action5 = changeEditorAction('');
-            dispatch(action5)
-            const action6 = changeEstimateAction(0);
-            dispatch(action6)
-            const action7 = changeAssignAction([]);
-            dispatch(action7)
-            const action8 = changeTimeTrackingSpentAction(0);
-            dispatch(action8)
-            const action9 = changeTimeTrackingRemainingAction(0);
-            dispatch(action9)
-            const action10 = changeStatusAction('1');
-            dispatch(action10)
+            // const action2 = changeInputAction('');
+            // dispatch(action2)
+            // const action3 = changePriorityAction(1);
+            // dispatch(action3)
+            // const action4 = changeTaskTypeAction(1);
+            // dispatch(action4)
+            // const action5 = changeEditorAction('');
+            // dispatch(action5)
+            // const action6 = changeEstimateAction(0);
+            // dispatch(action6)
+            // const action7 = changeAssignAction([]);
+            // dispatch(action7)
+            // const action8 = changeTimeTrackingSpentAction(0);
+            // dispatch(action8)
+            // const action9 = changeTimeTrackingRemainingAction(0);
+            // dispatch(action9)
+            // const action10 = changeStatusAction('1');
+            // dispatch(action10)
             Swal.fire({
                 icon:'success',
                 title:'Success',

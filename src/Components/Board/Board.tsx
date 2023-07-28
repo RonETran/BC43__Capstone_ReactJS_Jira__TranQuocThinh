@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "../Header/Header";
 import { Avatar } from "antd";
 import {DragDropContext,Droppable,Draggable} from "react-beautiful-dnd";
@@ -9,7 +9,6 @@ import { getProjectDetailApi, setIsFragAction} from "../../Redux/reducers/editPr
 import { TaskUpdate, updateStatusApi } from "../../Redux/reducers/editProjectReducer";
 import { getCommentApi, getTaskDetailApi, openModalTask } from "../../Redux/reducers/taskDetailReducer";
 import { getUserByProjectIdApi } from "../../Redux/reducers/userReducer";
-import { TaskFrm, changeAssignAction } from "../../Redux/reducers/taskReducer";
 
 type Props = {};
 
@@ -17,7 +16,6 @@ export default function Board({}: Props) {
   const { projectDetail } = useSelector(
     (state: RootState) => state.editProjectReducer
   );
-  const taskFrm:TaskFrm = useSelector((state:RootState)=>state.taskReducer.taskFrm)
   const {isFrag} = useSelector((state:RootState) => state.editProjectReducer)
   const dispatch: DispatchType = useDispatch();
   const params = useParams();
@@ -28,7 +26,8 @@ export default function Board({}: Props) {
   };
 
   useEffect(() => {
-    if(isFrag) {
+    if(isFrag){
+
       getProjectDetail(Number(params.id));
       const action = setIsFragAction(false);
       dispatch(action)
@@ -61,21 +60,23 @@ export default function Board({}: Props) {
   const renderCardTaskList = () => {
     return (
       <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="container">
+        <div className="row">
         {projectDetail.lstTask?.map((taskListDetail, index) => {
           return (
+            <div
+              key={index}
+              className="col-lg-3 col-md-6 col-sm-12"
+              style={{ marginBottom: "20px" }}
+            >
             <Droppable droppableId={taskListDetail.statusId} key={index}>
               {(provided) => {
                 return (
-                  <div
+                    <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     key={index}
                     className="card"
-                    style={{
-                      width: "17rem",
-                      height: "auto",
-                      paddingBottom: 10,
-                    }}
                   >
                     <div className="card-header">
                       {taskListDetail.statusName}
@@ -206,8 +207,11 @@ export default function Board({}: Props) {
                 );
               }}
             </Droppable>
+            </div>
           );
         })}
+        </div>
+        </div>
       </DragDropContext>
     );
   };
@@ -216,11 +220,8 @@ export default function Board({}: Props) {
       <Header title="Project Detail" />
       <h4 className="title">Board - {projectDetail.projectName}</h4>
       <div className="info" style={{ display: "flex" }}>
-        <div className="search-block">
-          <input className="search mt-1" />
-          <i className="fa fa-search mt-2" />
-        </div>
         <div className="avatar-group" style={{ display: "flex" }}>
+          <p className="cus-p">Members:</p>
           <Avatar.Group
             maxCount={4}
             size="large"
@@ -231,14 +232,7 @@ export default function Board({}: Props) {
             })}
           </Avatar.Group>
         </div>
-        <div style={{ marginLeft: 20 }} className="text ms-5">
-          Only My Issues
-        </div>
-        <div style={{ marginLeft: 20 }} className="text">
-          Recently Updated
-        </div>
       </div>
-      
       <div className="content" style={{ display: "flex" }}>
         {renderCardTaskList()}
       </div>

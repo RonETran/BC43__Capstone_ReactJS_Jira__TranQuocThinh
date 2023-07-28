@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { http, httpAuth } from '../../Util/config';
 import { DispatchType } from '../configStore';
 import { Member } from './editProjectReducer';
-import Swal from 'sweetalert2';
 import { openNotification } from '../../Util/notification/notification';
 import { setIsFragProject } from './projectReducer';
 

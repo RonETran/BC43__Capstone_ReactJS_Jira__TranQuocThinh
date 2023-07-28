@@ -80,7 +80,7 @@ const initialState: ProjectDetailInit = {
     projectName: "",
     creator: 0,
     description: "",
-    categoryId: 0,
+    categoryId: 1,
   }
 };
 
