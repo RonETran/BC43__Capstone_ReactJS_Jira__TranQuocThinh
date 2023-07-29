@@ -99,6 +99,11 @@ const editProjectReducer = createSlice({
     },
     getProjectDetailAction: (state,action) => {
       state.projectDetail = action.payload;
+      state.projectUpdate.id = state.projectDetail.id;
+      state.projectUpdate.projectName = state.projectDetail.projectName;
+      state.projectUpdate.creator = state.projectDetail.creator.id;
+      state.projectUpdate.categoryId = state.projectDetail.projectCategory.id;
+      state.projectUpdate.description = state.projectDetail.description;
     },
     changeProjectAction: (state,action) => {
       state.projectDetail = action.payload;
