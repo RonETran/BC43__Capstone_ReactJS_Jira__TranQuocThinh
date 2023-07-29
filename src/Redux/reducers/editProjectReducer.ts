@@ -96,7 +96,6 @@ const editProjectReducer = createSlice({
     },
     closeEditProjectAction: (state,action) =>{
       state.visibleDrawer = false;
-      state.projectUpdate = initialState.projectUpdate
     },
     getProjectDetailAction: (state,action) => {
       state.projectDetail = action.payload;
@@ -115,7 +114,6 @@ const editProjectReducer = createSlice({
       state.projectDetail.description = action.payload;
       state.projectUpdate.description = state.projectDetail.description;
     },
-    
   }
 });
 

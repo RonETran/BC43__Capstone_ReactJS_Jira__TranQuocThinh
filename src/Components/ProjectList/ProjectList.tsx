@@ -138,9 +138,9 @@ export default function ProjectList({}: Props) {
             to={`/projectdetail/${record.id}`}
             style={{ cursor: "pointer" }}
             className="t-none"
-            onClick={()=>{
+            onClick={() => {
               const action = setIsFragAction(true);
-              dispatch(action)
+              dispatch(action);
             }}
           >
             {text}
@@ -373,46 +373,126 @@ export default function ProjectList({}: Props) {
     },
   ];
 
-  const renderMembers = (members: any, item: any) => (
-    <div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Avatar</th>
-            <th>Name</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {members.map((member: any, index: any) => (
-            <tr key={index} className="ver-mid">
-              <th>{member.userId}</th>
-              <td>
-                <Avatar src={member.avatar} key={index} />
-              </td>
-              <td>{member.name}</td>
-              <td>
-                <Button
-                  className="ml-1"
-                  type="default"
-                  danger
-                  size="small"
-                  style={{ fontWeight: "bold", fontSize: 15 }}
-                  onClick={() => {
-                    const value = { projectId: item.id, userId: member.userId };
-                    const actionApi = removeUserFromProjectApi(value);
-                    dispatch(actionApi);
-                  }}
-                >
-                  X
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+  const renderMembers = (item: any) => (
+    <>
+      <Popover
+        placement="topLeft"
+        title={"Members"}
+        content={() => {
+          return (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Avatar</th>
+                  <th>Name</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {item.members?.map((member: Member, index: any) => {
+                  return (
+                    <tr key={index} className="ver-mid">
+                      <th>{member.userId}</th>
+                      <td>
+                        <Avatar src={member.avatar} key={index} />
+                      </td>
+                      <td>{member.name}</td>
+                      <td>
+                        <Button
+                          className="ml-1"
+                          type="default"
+                          danger
+                          size="small"
+                          style={{ fontWeight: "bold", fontSize: 15 }}
+                          onClick={() => {
+                            const value = {
+                              projectId: item.id,
+                              userId: member.userId,
+                            };
+                            const actionApi = removeUserFromProjectApi(value);
+                            dispatch(actionApi);
+                          }}
+                        >
+                          X
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          );
+        }}
+        trigger="hover"
+      >
+        <button className="bg-none">
+          <Avatar.Group
+            maxCount={2}
+            maxStyle={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+          >
+            {item.members.map((member: any, index: any) => {
+              return <Avatar src={member.avatar} key={index} />;
+            })}
+          </Avatar.Group>
+        </button>
+      </Popover>
+
+      <Popover
+        placement="topLeft"
+        title={"Add Member"}
+        content={() => {
+          return (
+            <div>
+              <AutoComplete
+                value={usernameSearch}
+                onChange={(value) => {
+                  setUsernameSearch(value);
+                }}
+                options={userSearched
+                  ?.filter((user: Member) => {
+                    let index = item.members.findIndex(
+                      (member: Member) => member.userId === user.userId
+                    );
+                    if (index !== -1) {
+                      return false;
+                    }
+                    return true;
+                  })
+                  .map((user: Member, index: any) => {
+                    return {
+                      label: user.name,
+                      value: user.userId,
+                      key: index,
+                    };
+                  })}
+                onSelect={(value, option) => {
+                  setUsernameSearch(option.label);
+                  const values = {
+                    projectId: item.id,
+                    userId: option.value,
+                  };
+                  const actionApi = addUserToProjectApi(values);
+                  dispatch(actionApi);
+                }}
+                style={{ width: "100%" }}
+                onSearch={handleSearch}
+                placeholder="Username"
+              />
+            </div>
+          );
+        }}
+        trigger="click"
+      >
+        <Button
+          type="primary"
+          size="small"
+          style={{ fontWeight: "bold", fontSize: 15 }}
+        >
+          +
+        </Button>
+      </Popover>
+    </>
   );
 
   const renderItem = (item: any) => (
@@ -439,39 +519,7 @@ export default function ProjectList({}: Props) {
           </div>
           <div>
             <strong className="strong">Members:</strong>
-            {renderMembers(item.members, item)}
-            <AutoComplete
-              value={usernameSearch}
-              onChange={(value) => {
-                setUsernameSearch(value);
-              }}
-              options={userSearched
-                ?.filter((user) => {
-                  let index = item.members.findIndex(
-                    (member: any) => member.userId === user.userId
-                  );
-                  if (index !== -1) {
-                    return false;
-                  }
-                  return true;
-                })
-                .map((user, index) => {
-                  return {
-                    label: user.name,
-                    value: user.userId,
-                    key: index,
-                  };
-                })}
-              onSelect={(value, option) => {
-                setUsernameSearch(option.label);
-                const values = { projectId: item.id, userId: option.value };
-                const actionApi = addUserToProjectApi(values);
-                dispatch(actionApi);
-              }}
-              style={{ width: "100%" }}
-              onSearch={handleSearch}
-              placeholder="Add member"
-            />
+            {renderMembers(item)}
           </div>
           <div className="mt-3">
             <strong className="strong">Actions:</strong>
