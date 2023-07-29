@@ -373,7 +373,7 @@ export default function ProjectList({}: Props) {
     },
   ];
 
-  const renderMembers = (item: any) => (
+  const renderMembers = (item:any) => (
     <>
       <Popover
         placement="topLeft"
